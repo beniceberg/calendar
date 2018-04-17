@@ -8,9 +8,8 @@ class App extends Component {
     super(props);
     this.current = new Date();
     this.state = {
-      currentDate: new Date(),
-      // viewDate: new Date(moment(this.current).format('l').split('/')[2], moment(this.current).format('l').split('/')[0] - 1, 1),
-      viewDate: new Date(this.current.setDate(1)),
+      currentDate: this.current,
+      viewDate: this.current.setDate(1),
     }
   }
 
@@ -41,15 +40,21 @@ class App extends Component {
     })
   }
 
-  getDate() {
+  renderDate() {
     const daysArray = [];
-    let viewMonth = this.state.viewDate.getMonth();
+    let viewMonth = new Date(this.state.viewDate).getMonth();
     let month = viewMonth;
-    let day = this.state.viewDate;
-    let dayNumber = 0;
+    let day = new Date(this.state.viewDate);
+    let dayOfWeek = day.getDay()
+    // if (dayOfWeek !== 1) {
+    //   if(dayOfWeek === 0) dayOfWeek = 7;
+    //   for (let i = 1; i < dayOfWeek; i++) {
+    //     daysArray.push(moment(this.state.viewDate).subtract(i,'days'));
+    //   }
+    // }
     while (month === viewMonth) {
       daysArray.push(<p> {moment(day).format('l')} </p>);
-      day = this.state.viewDate.setDate(this.state.viewDate.getDate()+1);
+      day = new Date(day.setDate(day.getDate()+1));
       month = moment(day).format('l').split('/')[0]-1;
     }
     return daysArray;
@@ -59,8 +64,8 @@ class App extends Component {
     return (
       <div className="App">
         <h1>My Calendar</h1>
-        {this.getDate()}
-        {/* {this.state.viewDate} */}
+        {this.renderDate()}
+        {/* {this.state.viewDate.getDay()} */}
         {/* {this.state.currentDate.getDate()} */}
       </div>
     );
