@@ -46,16 +46,25 @@ class App extends Component {
     let month = viewMonth;
     let day = new Date(this.state.viewDate);
     let dayOfWeek = day.getDay()
-    // if (dayOfWeek !== 1) {
-    //   if(dayOfWeek === 0) dayOfWeek = 7;
-    //   for (let i = 1; i < dayOfWeek; i++) {
-    //     daysArray.push(moment(this.state.viewDate).subtract(i,'days'));
-    //   }
-    // }
+    if (dayOfWeek !== 1) {
+      if(dayOfWeek === 0) dayOfWeek = 7;
+      for (let i = dayOfWeek - 1; i > 0; i--) {
+        daysArray.push(<p> {moment(this.state.viewDate).subtract(i,'days').calendar()} </p>);
+      }
+    }
     while (month === viewMonth) {
       daysArray.push(<p> {moment(day).format('l')} </p>);
       day = new Date(day.setDate(day.getDate()+1));
       month = moment(day).format('l').split('/')[0]-1;
+    }
+    let lastDay = day.getDay();
+    if (lastDay !== 1) {
+      if(lastDay === 0) daysArray.push(<p> {moment(day).format('l')} </p>);
+      else {
+        for (let i = 0; i <= 7 - lastDay; i++) {
+          daysArray.push(<p> {moment(this.state.viewDate).add(i,'days').calendar()} </p>);
+        }
+      }
     }
     return daysArray;
   }
