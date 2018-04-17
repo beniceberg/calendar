@@ -15,28 +15,25 @@ class App extends Component {
 
   nextMonth () {
     this.setState({
-      viewDate: moment(this.state.viewDate).add(1, 'months'),
+      viewDate: new Date(this.state.viewDate).setMonth(this.state.viewDate.getMonth() + 1),
     });
   }
 
   prevMonth () {
     this.setState({
-      viewDate: moment(this.state.viewDate).subtract(1, 'months'),
+      viewDate: new Date(this.state.viewDate).setMonth(this.state.viewDate.getMonth() - 1),
     });
   }
 
   setMonth (monthId) {
-    const viewDate = this.state.viewDate;
-    viewDate.setMonth(monthId);
     this.setState({
-      viewDate,
+      viewDate: new Date(this.state.viewDate).setMonth(monthId),
     })
   }
 
   setYear (yearId) {
-    const viewDate = new Date(yearId, this.state.viewDate.getMonth(), 1);
     this.setState({
-      viewDate,
+      viewDate: new Date(this.state.viewDate).setYear(monthId),
     })
   }
 
