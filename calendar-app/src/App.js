@@ -33,7 +33,7 @@ class App extends Component {
 
   setYear (yearId) {
     this.setState({
-      viewDate: new Date(this.state.viewDate).setYear(monthId),
+      viewDate: new Date(this.state.viewDate).setYear(yearId),
     })
   }
 
