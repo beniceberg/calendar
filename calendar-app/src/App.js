@@ -10,7 +10,7 @@ class App extends Component {
     this.state = {
       currentDate: new Date(),
       // viewDate: new Date(moment(this.current).format('l').split('/')[2], moment(this.current).format('l').split('/')[0] - 1, 1),
-      viewDate: new Date().setDate(1),
+      viewDate: new Date(this.current.setDate(1)),
     }
   }
 
@@ -42,37 +42,26 @@ class App extends Component {
   }
 
   getDate() {
-    // const daysArray = [];
-    // const viewMonth = moment(this.state.viewDate).format('l').split('/')[0];
-    // for (let i=0; i<100; i++) {
-    //   const date = <p> {moment(this.state.viewDate).add(i, 'days').calendar()} </p>;
-    //   daysArray.push(date);
-    // }
-    // const firstDay = this.state.viewDate.getDay();
-    // if (firstDay !== 0) {
-    //   // if (firstDay === 0) firstDay = 7;
-    //   for (let i=firstDay; i > 0; i--) {
-    //     daysArray.push(<p> {moment(this.state.viewDate).subtract(i,'days')} </p>)
-    //   }
-    // }
-
-    // let viewMonth = this.state.viewDate;
-    // viewMonth = viewMonth.getMonth();
-    // let month = viewMonth;
-    // let dayNumber = 0;
-    // while (month === viewMonth) {
-    //   const day = this.state.viewDate.setDate(this.state.viewDate.getDate()+1);
-    //   daysArray.push(<p> {day} </p>);
-    //   month = day.getMonth();
-    // }
-    // return daysArray;
+    const daysArray = [];
+    let viewMonth = this.state.viewDate.getMonth();
+    let month = viewMonth;
+    let day = this.state.viewDate;
+    let dayNumber = 0;
+    while (month === viewMonth) {
+      daysArray.push(<p> {moment(day).format('l')} </p>);
+      day = this.state.viewDate.setDate(this.state.viewDate.getDate()+1);
+      month = moment(day).format('l').split('/')[0]-1;
+    }
+    return daysArray;
   }
+
   render() {
     return (
       <div className="App">
         <h1>My Calendar</h1>
-        {/* {this.getDate()} */}
-        {this.state.viewDate}
+        {this.getDate()}
+        {/* {this.state.viewDate} */}
+        {/* {this.state.currentDate.getDate()} */}
       </div>
     );
   }
