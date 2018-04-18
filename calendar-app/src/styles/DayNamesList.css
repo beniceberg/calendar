@@ -1,0 +1,11 @@
+.DayNamesList {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  background-color: rgba(221, 217, 216, 0.17);
+}
+
+.DayName {
+  width: 20%;
+}

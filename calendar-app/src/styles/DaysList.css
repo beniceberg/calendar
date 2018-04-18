@@ -1,0 +1,11 @@
+.DaysList {
+  background-color: rgb(216, 239, 247);
+}
+
+.Day {
+  display: inline-block;
+  float:left;
+  width: 148px;
+  border: 1px solid black;
+  height: 100px;
+}
