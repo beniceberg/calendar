@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import './App.css';
+
+import moment from 'moment';
 
 import { DaysList } from './components/DaysList';
 import { DayNamesList } from './components/DayNamesList';
 
-// import MonthDropDown from './components/MonthDropDown';
-
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
-
-const moment = require('moment');
+import right from './assets/right-arrow.svg';
 
 const months = [
   'January',
@@ -27,6 +25,8 @@ const months = [
   'December'
 ];
 
+const years = [1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030]
+
 class App extends Component {
 
   constructor (props) {
@@ -37,7 +37,8 @@ class App extends Component {
       currentDate: this.current,
       viewDate: this.current.setDate(1),
       daysList: [],
-      value: 'Month',
+      monthValue: 'Month',
+      yearValue: 'Year',
     }
   }
 
@@ -61,25 +62,33 @@ class App extends Component {
     this.renderDays();
   }
 
-  handleChange = (value) => {
-    this.setState({value: value});
-    // this.props.setMonth(value);
-    // this.props.storeMonth(value);
-    const monthId = months.indexOf(value);
+  handleMonthChange = (value) => {
+    this.setState({monthValue: value.value});
+    const monthId = months.indexOf(value.value);
     this.setMonth(monthId);
   };
 
+  handleYearChange = (value) => {
+    console.log(value.value)
+    this.setState({yearValue: value.value.toString()});
+    const yearId = value.value;
+    this.setYear(yearId);
+  };
+
   setMonth = async (monthId) => {
-    const viewDate = await new Date(this.state.viewDate).setMonth(monthId)
+    const viewDate = await new Date(this.state.viewDate).setMonth(monthId);
     this.setState({
       viewDate,
-    })
+    });
+    this.renderDays();
   }
 
-  setYear (yearId) {
+  setYear = async (yearId) => {
+    const viewDate = await new Date(this.state.viewDate).setFullYear(yearId)
     this.setState({
-      viewDate: new Date(this.state.viewDate).setYear(yearId),
-    })
+      viewDate,
+    });
+    this.renderDays();
   }
 
   renderDays = async ()  => {
@@ -127,14 +136,25 @@ class App extends Component {
         <div>
           <h2>{moment(this.state.viewDate).format('MMMM YYYY')}</h2>
         </div>
-        {/* <MonthDropDown setMonth={this.setMonth}/> */}
-        <Dropdown
-          onChange={this.handleChange}
-          options={months}
-          value={this.state.value}
-        />
+        <div className="dropdowns">
+          <Dropdown
+            onChange={this.handleMonthChange}
+            options={months}
+            value={this.state.monthValue}
+          />
+          <Dropdown
+            onChange={this.handleYearChange}
+            options={years}
+            value={this.state.yearValue}
+          />
+        </div>
         <div className="calendarView">
-          <button onClick={this.prevMonth}>PREV</button>
+          <img
+            src={right}
+            className="leftLogo"
+            alt="logo"
+            onClick={this.prevMonth}
+          />
           <div className="container">
             <DayNamesList dayNames={this.dayNames}/>
             <DaysList
@@ -142,24 +162,17 @@ class App extends Component {
               viewDate={new Date(this.state.viewDate)}
             />
           </div>
-          <button onClick={this.nextMonth}>NEXT</button>
+          <img
+            src={right}
+            className="rightLogo"
+            alt="logo"
+            onClick={this.nextMonth}
+          />
         </div>
-        <p>{moment(this.state.viewDate).format('L')}</p>
       </div>
     );
   }
 
 };
 
-const mapStateToProps = (state) => ({
-  // Map your state to props
-  monthId: state.monthId
-
-});
-// const mapDispatchToProps = (dispatch) => ({
-//   // Map your dispatch actions
-//   /* These functions will go through the actions to the reducer function */
-//   storeTopics: (topics) => dispatch(storeTopics(topics)),
-// });
-
-export default connect(mapStateToProps, null)(App);
+export default App;

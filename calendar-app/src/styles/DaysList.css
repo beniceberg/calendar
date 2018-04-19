@@ -5,6 +5,7 @@
 .Day {
   display: inline-block;
   float:left;
+  text-align: right;
   width: 148px;
   border: 1px solid black;
   height: 100px;
